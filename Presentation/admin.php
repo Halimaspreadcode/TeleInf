@@ -50,7 +50,7 @@
                     <td>Halima GUEYE</td>
                     <td>halima@example.com</td>
                     <td>
-                        <button class="admin-button edit">Modifier</button>
+                        <button class="admin-button edit" data-entity="user" data-id="1">Modifier</button>
                         <button class="admin-button delete">Supprimer</button>
                     </td>
                 </tr>
@@ -58,7 +58,7 @@
                     <td>Thierno Ismaila DIALLO</td>
                     <td>isBongo@example.com</td>
                     <td>
-                        <button class="admin-button edit">Modifier</button>
+                        <button class="admin-button edit" data-entity="user" data-id="1">Modifier</button>
                         <button class="admin-button delete">Supprimer</button>
                     </td>
                 </tr>
@@ -101,14 +101,14 @@
                 <tr>
                     <td>Politique</td>
                     <td>
-                        <button class="admin-button edit">Modifier</button>
+                        <button class="admin-button edit" data-entity="category" data-id="1">Modifier</button>
                         <button class="admin-button delete">Supprimer</button>
                     </td>
                 </tr>
                 <tr>
                     <td>Economie</td>
                     <td>
-                        <button class="admin-button edit">Modifier</button>
+                        <button class="admin-button edit" data-entity="category" data-id="1">Modifier</button>
                         <button class="admin-button delete">Supprimer</button>
                     </td>
                 </tr>
@@ -135,7 +135,7 @@
                         En prélude à sa tournée nationale pour le parrainage dans le cadre de l’élection présidentielle du 25 février 2024, Déthié Fall a effectué son Ziar à Ndiassane. À cette occasion, il a présenté ses condoléances au Khalife suite au rappel à Dieu le 16 Mai 2023 du défunt Khalife Cheikh Becaye El Becaye Kounta.
                         “J’en ai profité aussi pour solliciter des prières auprès des autorités religieuses de la ville pour ma candidature à la présidentielle de 2024 et pour l’organisation d’élections libres, transparentes avec la participation de tous les candidats”, déclare le Président du PRP.
                     <td>
-                        <button class="admin-button edit">Modifier</button>
+                        <button class="admin-button edit" data-entity="article" data-id="1">Modifier</button>
                         <button class="admin-button delete">Supprimer</button>
                     </td>
                 </tr>
@@ -146,7 +146,7 @@
                         “J’en ai profité aussi pour solliciter des prières auprès des autorités religieuses de la ville pour ma candidature à la présidentielle de 2024 et pour l’organisation d’élections libres, transparentes avec la participation de tous les candidats”, déclare le Président du PRP.
                     </td>
                     <td>
-                        <button class="admin-button edit">Modifier</button>
+                        <button class="admin-button edit" data-entity="article" data-id="1">Modifier</button>
                         <button class="admin-button delete">Supprimer</button>
                     </td>
                 </tr>
@@ -255,6 +255,68 @@
             modal.style.display = "none";
         }
     }
+
+    let editButtons = document.querySelectorAll('.edit');
+
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            let entity = this.getAttribute('data-entity');
+            let id = this.getAttribute('data-id');
+
+            // Call a function to open the modal and load the entity details
+            openModal(entity, id);
+        });
+    });
+
+    //Modal form for modify
+    function openModal(entity, id) {
+    // Open the modal
+
+    // Get the form element
+    var form = document.getElementById("modalForm");
+    form.innerHTML = ''; // Reset the form
+
+    // Load the entity details based on the entity type
+    switch(entity) {
+        case 'user':
+            // Load user details
+            form.innerHTML += '<h3">Modifier utilisateur</h3><br>';
+            form.innerHTML += '<label class="modal-label" for="username">Nouveau Nom d\'utilisateur:</label><br>';
+            form.innerHTML += '<input  class="modal-input" type="text" id="username" name="username" placeholder="Saisir le nom d\'utilisateur"><br>';
+            form.innerHTML += '<label class="modal-label" for="pwd">Nouveau Mot de passe:</label><br>';
+            form.innerHTML += '<input class="modal-input" type="password" id="pwd" name="pwd"  placeholder="Saisir le mot de passe"><br>';
+            form.innerHTML += '<label class="modal-label" for="type">Type:</label><br>';
+            form.innerHTML += '<div>     <select class="modal-selector" id="type" name="type">     <option value="admin">Admin</option><option value="editeur">Éditeur</option>     </select><button class="modal-button" id="generateToken">Générer un jeton</button><br></div>';
+            form.innerHTML += '<div id="tokenBlock" class="modal-tokenBlock"></div>';
+            form.innerHTML += '<button class="modal-submit" id="editUser">Modifier</button>';
+            break;
+        case 'category':
+            // Load category details
+            form.innerHTML += '<h3">Modifier catégories</h3><br>';
+            form.innerHTML += '<label class="modal-label" for="category">Nouveau Nom de la catégorie:</label><br>';
+            form.innerHTML += '<input class="modal-input" type="text" id="category" name="category"><br>';
+            form.innerHTML += '<button class="modal-submit" id="editCategory">Modifier</button>';
+            break;
+        case 'article':
+            // Load article details
+            form.innerHTML += '<h3">Modifier articles</h3><br>';
+            form.innerHTML += '<label class="modal-label" for="title">Nouveau Titre:</label><br>';
+            form.innerHTML += '<input class="modal-input" type="text" id="title" name="title"><br>';
+            form.innerHTML += '<label class="modal-label for="date">Date de modification :</label><br>';
+            form.innerHTML += '<input class="modal-input" type="date" id="date" name="date" value="' + new Date().toISOString().substring(0, 10) + '" disabled><br>';
+            form.innerHTML += '<label class="modal-label for="content">Nouveau Contenu:</label><br>';
+            form.innerHTML += '<textarea class="modal-textarea" id="content" name="content"></textarea><br>';
+            form.innerHTML += '<label class="modal-label for="category">Catégories affiliée :</label><br>';
+            form.innerHTML += '<select class="modal-selector" id="category" name="category"><option value="politique">Politique</option><option value="economie">Économie</option><option value="culture">Culture</option><option value="sport">Sport</option><option value="sante">Santé</option><option value="technologie">Technologie</option><option value="education">Éducation</option><option value="environnement">Environnement</option></select><br>';
+            form.innerHTML += '<button class="modal-submit" id="editArticles">Modifier</button>';
+            break;
+    }
+
+    modal.style.display = "block";
+}
+
+
+    
 </script>
 </body>
 

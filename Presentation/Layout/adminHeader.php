@@ -15,7 +15,7 @@
             <nav class="navbar">
                 <div class="admin-navbar">
                     <a href="#" class="nav-branding">Admin User</a>
-                    <h6> Dashborad</h6>
+                    <h6> Dashboard</h6>
                 </div>
 
                 <div class="user">
