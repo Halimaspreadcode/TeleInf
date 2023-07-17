@@ -29,6 +29,15 @@
                 </form>
             </div>
 
+            <!-- Modal for modify content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form id="modalModifForm">
+                    <!-- The form fields will be dynamically added here -->
+                </form>
+            </div>
+
+
         </div>
 
 
@@ -273,7 +282,7 @@
     // Open the modal
 
     // Get the form element
-    var form = document.getElementById("modalForm");
+    var form = document.getElementById("modalModifForm"); //Form pour modifier
     form.innerHTML = ''; // Reset the form
 
     // Load the entity details based on the entity type
