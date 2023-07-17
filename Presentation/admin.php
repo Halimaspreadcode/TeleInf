@@ -19,26 +19,32 @@
 
 
         <!-- The Modal -->
-        <div id="myModal" class="modal">
+        <div id="myModalAdd" class="modal">
 
             <!-- Modal content -->
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <form id="modalForm">
+                <form id="modalFormAdd">
                     <!-- The form fields will be dynamically added here -->
                 </form>
             </div>
+        </div>
 
-            <!-- Modal for modify content -->
+        <!-- The Edit Modal -->
+        <div id="myModalEdit" class="modal">
+            <!-- Modal content -->
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <form id="modalModifForm">
+                <form id="modalFormEdit">
                     <!-- The form fields will be dynamically added here -->
                 </form>
             </div>
-
-
         </div>
+
+
+
+
+
 
 
 
@@ -199,7 +205,8 @@
 </script>
 <script>
     // Get the modal
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById("myModalAdd");
+    var modalEdit = document.getElementById("myModalEdit");
 
     // Get the button that opens the modal
     var btns = document.getElementsByClassName("admin-button");
@@ -211,7 +218,7 @@
     for (var i = 0; i < btns.length; i++) {
         btns[i].onclick = function() {
             var btnType = this.innerHTML;
-            var form = document.getElementById("modalForm");
+            var form = document.getElementById("modalFormAdd");
             form.innerHTML = ''; // Reset the form
 
             if (btnType == 'Ajouter un utilisateur') {
@@ -265,6 +272,7 @@
         }
     }
 
+
     let editButtons = document.querySelectorAll('.edit');
 
     editButtons.forEach(function(button) {
@@ -279,53 +287,65 @@
 
     //Modal form for modify
     function openModal(entity, id) {
-    // Open the modal
+        // Open the modal
+        modalEdit.style.display = "block";
 
-    // Get the form element
-    var form = document.getElementById("modalModifForm"); //Form pour modifier
-    form.innerHTML = ''; // Reset the form
+        // Get the form element
+        var form = document.getElementById("modalFormEdit");
+        form.innerHTML = ''; // Reset the form
 
-    // Load the entity details based on the entity type
-    switch(entity) {
-        case 'user':
-            // Load user details
-            form.innerHTML += '<h3">Modifier utilisateur</h3><br>';
-            form.innerHTML += '<label class="modal-label" for="username">Nouveau Nom d\'utilisateur:</label><br>';
-            form.innerHTML += '<input  class="modal-input" type="text" id="username" name="username" placeholder="Saisir le nom d\'utilisateur"><br>';
-            form.innerHTML += '<label class="modal-label" for="pwd">Nouveau Mot de passe:</label><br>';
-            form.innerHTML += '<input class="modal-input" type="password" id="pwd" name="pwd"  placeholder="Saisir le mot de passe"><br>';
-            form.innerHTML += '<label class="modal-label" for="type">Type:</label><br>';
-            form.innerHTML += '<div>     <select class="modal-selector" id="type" name="type">     <option value="admin">Admin</option><option value="editeur">Éditeur</option>     </select><button class="modal-button" id="generateToken">Générer un jeton</button><br></div>';
-            form.innerHTML += '<div id="tokenBlock" class="modal-tokenBlock"></div>';
-            form.innerHTML += '<button class="modal-submit" id="editUser">Modifier</button>';
-            break;
-        case 'category':
-            // Load category details
-            form.innerHTML += '<h3">Modifier catégories</h3><br>';
-            form.innerHTML += '<label class="modal-label" for="category">Nouveau Nom de la catégorie:</label><br>';
-            form.innerHTML += '<input class="modal-input" type="text" id="category" name="category"><br>';
-            form.innerHTML += '<button class="modal-submit" id="editCategory">Modifier</button>';
-            break;
-        case 'article':
-            // Load article details
-            form.innerHTML += '<h3">Modifier articles</h3><br>';
-            form.innerHTML += '<label class="modal-label" for="title">Nouveau Titre:</label><br>';
-            form.innerHTML += '<input class="modal-input" type="text" id="title" name="title"><br>';
-            form.innerHTML += '<label class="modal-label for="date">Date de modification :</label><br>';
-            form.innerHTML += '<input class="modal-input" type="date" id="date" name="date" value="' + new Date().toISOString().substring(0, 10) + '" disabled><br>';
-            form.innerHTML += '<label class="modal-label for="content">Nouveau Contenu:</label><br>';
-            form.innerHTML += '<textarea class="modal-textarea" id="content" name="content"></textarea><br>';
-            form.innerHTML += '<label class="modal-label for="category">Catégories affiliée :</label><br>';
-            form.innerHTML += '<select class="modal-selector" id="category" name="category"><option value="politique">Politique</option><option value="economie">Économie</option><option value="culture">Culture</option><option value="sport">Sport</option><option value="sante">Santé</option><option value="technologie">Technologie</option><option value="education">Éducation</option><option value="environnement">Environnement</option></select><br>';
-            form.innerHTML += '<button class="modal-submit" id="editArticles">Modifier</button>';
-            break;
+
+        // Load the entity details based on the entity type
+        switch (entity) {
+            case 'user':
+                // Load user details
+                form.innerHTML += '<h3">Modifier utilisateur</h3><br>';
+                form.innerHTML += '<label class="modal-label" for="username">Nouveau Nom d\'utilisateur:</label><br>';
+                form.innerHTML += '<input  class="modal-input" type="text" id="username" name="username" placeholder="Saisir le nom d\'utilisateur"><br>';
+                form.innerHTML += '<label class="modal-label" for="pwd">Nouveau Mot de passe:</label><br>';
+                form.innerHTML += '<input class="modal-input" type="password" id="pwd" name="pwd"  placeholder="Saisir le mot de passe"><br>';
+                form.innerHTML += '<label class="modal-label" for="type">Type:</label><br>';
+                form.innerHTML += '<div>     <select class="modal-selector" id="type" name="type">     <option value="admin">Admin</option><option value="editeur">Éditeur</option>     </select><button class="modal-button" id="generateToken">Générer un jeton</button><br></div>';
+                form.innerHTML += '<div id="tokenBlock" class="modal-tokenBlock"></div>';
+                form.innerHTML += '<button class="modal-submit" id="editUser">Modifier</button>';
+                break;
+            case 'category':
+                // Load category details
+                form.innerHTML += '<h3">Modifier catégories</h3><br>';
+                form.innerHTML += '<label class="modal-label" for="category">Nouveau Nom de la catégorie:</label><br>';
+                form.innerHTML += '<input class="modal-input" type="text" id="category" name="category"><br>';
+                form.innerHTML += '<button class="modal-submit" id="editCategory">Modifier</button>';
+                break;
+            case 'article':
+                // Load article details
+                form.innerHTML += '<h3">Modifier articles</h3><br>';
+                form.innerHTML += '<label class="modal-label" for="title">Nouveau Titre:</label><br>';
+                form.innerHTML += '<input class="modal-input" type="text" id="title" name="title"><br>';
+                form.innerHTML += '<label class="modal-label for="date">Date de modification :</label><br>';
+                form.innerHTML += '<input class="modal-input" type="date" id="date" name="date" value="' + new Date().toISOString().substring(0, 10) + '" disabled><br>';
+                form.innerHTML += '<label class="modal-label for="content">Nouveau Contenu:</label><br>';
+                form.innerHTML += '<textarea class="modal-textarea" id="content" name="content"></textarea><br>';
+                form.innerHTML += '<label class="modal-label for="category">Catégories affiliée :</label><br>';
+                form.innerHTML += '<select class="modal-selector" id="category" name="category"><option value="politique">Politique</option><option value="economie">Économie</option><option value="culture">Culture</option><option value="sport">Sport</option><option value="sante">Santé</option><option value="technologie">Technologie</option><option value="education">Éducation</option><option value="environnement">Environnement</option></select><br>';
+                form.innerHTML += '<button class="modal-submit" id="editArticles">Modifier</button>';
+                break;
+        }
+
+        modal.style.display = "block";
     }
 
-    modal.style.display = "block";
-}
+    // When the add button is clicked
+    document.getElementById('modalFormAdd').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Here you can do the AJAX request to add the item
+    });
 
-
-    
+    // When the edit button is clicked
+    document.getElementById('modalFormEdit').addEventListener('submit', function(e) {
+        e.preventDefault();
+        //Console.log("edit");
+        console.log(e.target);
+    });
 </script>
 </body>
 
